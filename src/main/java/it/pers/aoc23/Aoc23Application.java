@@ -1,6 +1,7 @@
 package it.pers.aoc23;
 
 import it.pers.aoc23.model.DiceGame;
+import it.pers.aoc23.model.Engine;
 import it.pers.aoc23.model.Trebuchet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,8 +13,13 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        dayTwo();
+        //dayTwo();
+        var test = new Engine("3/example.txt");
+        test.partOne();
     }
+
+
+
 
     public static void dayTwo(){
         var map = new HashMap<String,Integer>();
