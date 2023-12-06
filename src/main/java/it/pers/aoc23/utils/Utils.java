@@ -44,4 +44,10 @@ public class Utils {
             System.out.println("Error reading file: "+e.getMessage());
         }
     }
+
+    public static BufferedReader getFile(String filepath){
+        InputStream is = Aoc23Application.class.getClassLoader().getResourceAsStream(filepath);
+        assert is != null;
+        return new BufferedReader(new InputStreamReader(is));
+    }
 }
