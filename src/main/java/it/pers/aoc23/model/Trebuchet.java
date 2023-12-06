@@ -1,5 +1,6 @@
-package it.pers.aoc23.model.days;
+package it.pers.aoc23.model;
 
+import it.pers.aoc23.model.days.Day;
 import it.pers.aoc23.utils.Utils;
 
 import java.io.BufferedReader;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static it.pers.aoc23.utils.Utils.loadFile;
 
-public class Trebuchet implements Day{
+public class Trebuchet implements Day {
     public String filename;
 
     public static Utils.DayLoader<Integer> firstLoader = new Utils.DayLoader<Integer>() {
