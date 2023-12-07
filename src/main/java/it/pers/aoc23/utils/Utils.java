@@ -3,8 +3,14 @@ package it.pers.aoc23.utils;
 
 
 import it.pers.aoc23.Aoc23Application;
+import it.pers.aoc23.model.cardgame.ScratchCard;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class Utils {
 
@@ -49,5 +55,15 @@ public class Utils {
         InputStream is = Aoc23Application.class.getClassLoader().getResourceAsStream(filepath);
         assert is != null;
         return new BufferedReader(new InputStreamReader(is));
+    }
+
+    public static List<String> getFileLines(String filename){
+        try {
+            var is = Aoc23Application.class.getClassLoader().getResource(filename);
+            assert is != null;
+            return Files.readAllLines(Paths.get(is.toURI()), StandardCharsets.UTF_8);
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
