@@ -6,6 +6,7 @@ import it.pers.aoc23.model.Trebuchet;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.swing.text.Position;
 import java.util.HashMap;
 
 @SpringBootApplication
@@ -14,7 +15,7 @@ public class Aoc23Application {
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
         //dayTwo();
-        var test = new Engine("3/example.txt");
+        var test = new Engine("3/input.txt");
         test.partOne();
     }
 

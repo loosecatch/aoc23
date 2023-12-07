@@ -1,11 +1,10 @@
 package it.pers.aoc23.model;
 
 import it.pers.aoc23.model.days.Day;
+import org.springframework.lang.NonNull;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static it.pers.aoc23.utils.Utils.getFile;
 
@@ -52,11 +51,38 @@ public class Engine implements Day {
         this.symbols.forEach((s -> positionsToCheck.addAll(getPosition(s))));
         System.out.println(positionsToCheck);
         List<Position> digitsToCheck = new ArrayList<>();
+        Set<Position> checkedDigits = new HashSet<>();
         positionsToCheck.forEach((position -> digitsToCheck.addAll(getAdjacent(position))));
-        for(Position digit: positionsToCheck){
-            //TODO add digit to set if successful check if its part of a number, reconstruct the numbers and sum
-            // important: implement .equals for position
+        List<Integer> numbersToSum = new ArrayList<>();
+        Set<Position> alreadyComposedPositions = new HashSet<>();
+        for(Position digit: digitsToCheck.stream().sorted().toList()){
+            if(checkedDigits.add(digit)){
+                var found = getSymbol(digit);
+                System.out.println("found "+found+" at position "+digit);
+                Set<Position> positionsToCompose = new HashSet<>();
+                positionsToCompose.add(digit);
+                var inlinePrev = digit.getInLinePrev();
+                while (getSymbol(inlinePrev) != null && isDigit(getSymbol(inlinePrev))){
+                    positionsToCompose.add(inlinePrev);
+                    inlinePrev=inlinePrev.getInLinePrev();
+                }
+                var inLineNext = digit.getInLineNext();
+                while (getSymbol(inLineNext) != null && isDigit(getSymbol(inLineNext))){
+                    positionsToCompose.add(inLineNext);
+                    inLineNext=inLineNext.getInLineNext();
+                }
+                var firstPos = positionsToCompose.stream().sorted().toList().get(0);
+                System.out.println("firstPos: "+firstPos);
+                if(alreadyComposedPositions.add(firstPos)){
+                    var string = positionsToCompose.stream().sorted().map(this::getSymbol).reduce("", (s, str) -> s != null ? s.concat(str) : null);
+                    System.out.println("Number: "+string);
+                    numbersToSum.add(Integer.parseInt(string));
+                }
+            }
         }
+        var sum = numbersToSum.stream().reduce(0,Integer::sum);
+        System.out.println("Somma: "+sum);
+
     }
 
     @Override
@@ -64,6 +90,9 @@ public class Engine implements Day {
 
     }
 
+    private boolean isDigit(String str){
+        return str.replaceAll("\\d","").equalsIgnoreCase("");
+    }
 
     private List<Position> getPosition(String symbol){
         int i = 0;
@@ -81,6 +110,16 @@ public class Engine implements Day {
         }
         return list;
     }
+
+    private String getSymbol(Position position){
+        try{
+            return schematic[position.row][position.col];
+        }catch (IndexOutOfBoundsException e){
+            return null;
+        }
+    }
+
+
 
     private List<Position> getAdjacent(Position pos){
         var arr = this.schematic;
@@ -111,8 +150,9 @@ public class Engine implements Day {
                 if (dx != 0 || dy != 0) {
                     var found=arr[i + dx][j + dy];
                     if (!found.equals(".")){
-                        v.add(new Position(i + dx, j + dy));
-                        System.out.println(found);
+                        var npos = new Position(i + dx, j + dy);
+                        v.add(npos);
+
                     }
                 }
             }
@@ -122,7 +162,7 @@ public class Engine implements Day {
         return v;
     }
 
-    private static class Position {
+    private static class Position implements Comparable<Position> {
         int row;
         int col;
 
@@ -131,9 +171,43 @@ public class Engine implements Day {
             this.row=row;
         }
 
+        private Position getInLinePrev(){
+            return new Position(this.row, this.col-1);
+        }
+        private Position getInLineNext(){
+            return new Position(this.row, this.col+1);
+        }
         @Override
         public String toString(){
             return "(x="+row+",y="+col+")";
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof Position)) {
+                return false;
+            }
+            Position other = (Position) obj;
+            return this.row == other.row && this.col == other.col;
+        }
+
+        @Override
+        public int compareTo(@NonNull Position other) {
+            if (this.row == other.row) {
+                return Integer.compare(this.col, other.col);
+            }
+            return Integer.compare(this.row, other.row);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = 17;
+            result = 31 * result + row;
+            result = 31 * result + col;
+            return result;
         }
     }
 }
