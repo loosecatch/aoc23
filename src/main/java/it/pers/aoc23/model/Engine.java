@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static it.pers.aoc23.utils.Utils.getFile;
 
@@ -87,7 +88,58 @@ public class Engine implements Day {
 
     @Override
     public void partTwo() {
+        Set<Position> possibleGearPositions = new HashSet<>(getPosition("*"));
+        Map<Position,Set<Position>> possibleGearMap = new HashMap<>();
+        possibleGearPositions.forEach(position -> possibleGearMap.put(position,new HashSet<>(getAdjacent(position))));
+        Map<Position,List<Integer>> gearMap = new HashMap<>();
+        possibleGearMap.forEach((gear,digits) -> {
+            Set<Position> already= new HashSet<>();
+            digits.forEach(digit -> {
+                var found = getSymbol(digit);
+                if (found != null && isDigit(found)) {
+                    List<Integer> numbersToSum = new ArrayList<>();
+                    System.out.println("found " + found + " at position " + digit);
+                    Set<Position> positionsToCompose = new HashSet<>();
+                    positionsToCompose.add(digit);
+                    var inlinePrev = digit.getInLinePrev();
+                    while (getSymbol(inlinePrev) != null && isDigit(getSymbol(inlinePrev))) {
+                        positionsToCompose.add(inlinePrev);
+                        inlinePrev = inlinePrev.getInLinePrev();
+                    }
+                    var inLineNext = digit.getInLineNext();
+                    while (getSymbol(inLineNext) != null && isDigit(getSymbol(inLineNext))) {
+                        positionsToCompose.add(inLineNext);
+                        inLineNext = inLineNext.getInLineNext();
+                    }
 
+                    if (already.add(positionsToCompose.stream().sorted().toList().get(0))) {
+                        var string = positionsToCompose.stream().sorted().map(this::getSymbol).reduce("", (s, str) -> s != null ? s.concat(str) : null);
+                        System.out.println("Number: " + string);
+                        numbersToSum.add(Integer.parseInt(string));
+                        var list = gearMap.get(gear);
+                        if (list == null) gearMap.put(gear, numbersToSum);
+                        else list.add(Integer.parseInt(string));
+                    }
+
+                }
+            });
+        });
+        AtomicInteger sum = new AtomicInteger();
+        gearMap.keySet().stream().sorted().forEach((gear) -> {
+            var ints = gearMap.get(gear);
+            var ratio = ints.stream().reduce(1,(a,b)->a*b);
+
+            if(ints.size()==2){
+                System.out.println("Gear: " + gear + " numbers: " + ints + " ratio: "+ratio);
+                sum.addAndGet(ratio);
+                //this.schematic[gear.row][gear.col]=".";
+            }
+
+
+        });
+
+        System.out.println("Somma: "+sum.get());
+        //Arrays.stream(this.schematic).map(v -> Arrays.stream(v).reduce("", (s, str) -> s != null ? s.concat(str) : null)).forEach(System.out::println);
     }
 
     private boolean isDigit(String str){
@@ -148,9 +200,9 @@ public class Engine implements Day {
             for (int dy = (j > 0 ? -1 : 0);
                  dy <= (j < m ? 1 : 0); ++dy) {
                 if (dx != 0 || dy != 0) {
-                    var found=arr[i + dx][j + dy];
-                    if (!found.equals(".")){
-                        var npos = new Position(i + dx, j + dy);
+                    var npos = new Position(i + dx, j + dy);
+                    var found = getSymbol(npos);
+                    if ( found != null && !found.equals(".")) {
                         v.add(npos);
 
                     }

@@ -14,13 +14,16 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        //dayTwo();
-        var test = new Engine("3/input.txt");
-        test.partOne();
+
     }
 
 
 
+    public static void dayThree(){
+        var test = new Engine("3/input.txt");
+        test.partOne();
+        test.partTwo();
+    }
 
     public static void dayTwo(){
         var map = new HashMap<String,Integer>();
