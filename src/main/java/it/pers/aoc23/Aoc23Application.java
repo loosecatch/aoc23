@@ -5,10 +5,13 @@ import it.pers.aoc23.model.Engine;
 import it.pers.aoc23.model.Trebuchet;
 import it.pers.aoc23.model.cardgame.CardGame;
 import it.pers.aoc23.model.cardgame.ScratchCard;
+import it.pers.aoc23.model.garden.Garden;
+import it.pers.aoc23.model.garden.GardenMap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.swing.text.Position;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @SpringBootApplication
@@ -16,8 +19,8 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var test = new CardGame("4/input.txt");
-        test.partTwo();
+        var garden = new Garden("5/input.txt");
+        garden.partOne();
     }
 
 
