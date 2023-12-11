@@ -13,7 +13,7 @@ public class CardGame implements Day {
 
 
     public CardGame(String filename){
-        this.cards=getFileLines(filename).stream().map(ScratchCard::new).toList();
+        this.cards=getFileLines(filename).stream().map(ScratchCard::new).sorted().toList();
     }
 
     @Override
@@ -26,8 +26,10 @@ public class CardGame implements Day {
     @Override
     public void partTwo() {
         List<ScratchCard> newCards = new ArrayList<>(this.cards);
+        //System.out.println("Initial new ");
+        //newCards.stream().sorted().forEach(System.out::println);
         this.cards.forEach(scratchCard -> newCards.addAll(getCards(scratchCard)));
-        newCards.forEach(System.out::println);
+        //newCards.stream().sorted().forEach( c -> System.out.println(c.getID()));
         System.out.println(newCards.size());
     }
 
@@ -35,8 +37,12 @@ public class CardGame implements Day {
         List<ScratchCard> res = new ArrayList<>();
         try{
             var n = card.getMatches().size();
+            //System.out.println("Computing card: " + card.getID());
             for (int i=0;i<n;i++){
-                res.add(this.cards.get(i));
+                var c = this.cards.get(i+card.getID());
+                //System.out.println("adding card: " + c.getID());
+                res.add(c);
+                res.addAll(getCards(c));
             }
         }catch (IndexOutOfBoundsException | NumberFormatException e){
             System.out.println(e.getMessage());

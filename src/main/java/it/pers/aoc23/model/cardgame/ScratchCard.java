@@ -40,6 +40,10 @@ public class ScratchCard implements Comparable<ScratchCard>{
 
     @Override
     public int compareTo(ScratchCard o) {
-        return Integer;
+        return Integer.compare(this.ID, o.ID);
+    }
+
+    public int getID() {
+        return this.ID;
     }
 }

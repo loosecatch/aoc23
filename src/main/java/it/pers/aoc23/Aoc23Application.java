@@ -16,7 +16,7 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var test = new CardGame("4/example.txt");
+        var test = new CardGame("4/input.txt");
         test.partTwo();
     }
 
