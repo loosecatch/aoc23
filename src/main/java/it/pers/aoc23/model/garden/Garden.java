@@ -76,18 +76,7 @@ public class Garden implements Day {
 
     @Override
     public void partTwo() {
-        this.seeds.stream()
-                .map( range -> getRange("seed-to-soil",range))
-                .map(range -> getRange("soil-to-fertilizer",range))
-                .map(range -> getRange("fertilizer-to-water",range))
-                .map(range -> getRange("water-to-light",range))
-                .map(range -> getRange("light-to-temperature",range))
-                .map(range -> getRange("temperature-to-humidity",range))
-                .map(range -> getRange("humidity-to-location",range))
-                .reduce(Range::min)
-                .ifPresent(range -> {
-
-                });
+        partTwoBrute();
     }
 
     private Range getRange(String mapName, Range src) {

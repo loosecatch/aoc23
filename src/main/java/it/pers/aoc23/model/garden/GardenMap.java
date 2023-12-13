@@ -60,7 +60,7 @@ public class GardenMap {
 
     public Range getKeyByValue(Long value) {
         for (Map.Entry<Range, Range> entry : map.entrySet()) {
-            if (entry.getValue().isIncluded(value) {
+            if (entry.getValue().isIncluded(value)) {
                 return entry.getKey(); // Return the corresponding key for the given value
             }
         }
