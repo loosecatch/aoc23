@@ -3,6 +3,8 @@ package it.pers.aoc23;
 import it.pers.aoc23.model.DiceGame;
 import it.pers.aoc23.model.Engine;
 import it.pers.aoc23.model.Trebuchet;
+import it.pers.aoc23.model.boatrace.BoatRace;
+import it.pers.aoc23.model.boatrace.RaceGame;
 import it.pers.aoc23.model.cardgame.CardGame;
 import it.pers.aoc23.model.cardgame.ScratchCard;
 import it.pers.aoc23.model.garden.Garden;
@@ -13,14 +15,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @SpringBootApplication
 public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var garden = new Garden("5/example.txt");
-        garden.partTwo();
+        var test = new RaceGame("6/example.txt");
+        test.partTwo();
     }
 
 
