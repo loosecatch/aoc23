@@ -19,8 +19,8 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var garden = new Garden("5/input.txt");
-        garden.partOne();
+        var garden = new Garden("5/example.txt");
+        garden.partTwo();
     }
 
 

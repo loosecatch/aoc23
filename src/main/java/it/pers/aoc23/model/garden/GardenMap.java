@@ -7,7 +7,7 @@ import java.util.*;
 public class GardenMap {
     public final String name;
     public final Map<Range,Range> map;
-    public final List<String> lines;
+    public List<String> lines;
 
 
     public GardenMap(String name) {
@@ -19,7 +19,6 @@ public class GardenMap {
 
     public void initialize(List<String> lines){
         lines.forEach(this::lineConsumer);
-        System.out.println(this.name+" -> "+map);
     }
 
     public Long getValue(Long key){
@@ -36,11 +35,37 @@ public class GardenMap {
     }
 
     public void initialize(){
-        System.out.println(name);
         lines.forEach(this::lineConsumer);
-        System.out.println(this.name+" -> "+map);
     }
 
+    public Range getRange(Range range) {
+        for (Map.Entry<Range, Range> entry : map.entrySet()) {
+            Range existingRange = entry.getKey();
+            if (existingRange.isIncluded(range.getStart()) && existingRange.isIncluded(range.getEnd())) {
+                return entry.getValue(); // Return corresponding range if found
+            }
+        }
+        // Check if the given range already exists in the map
+        for (Map.Entry<Range, Range> entry : map.entrySet()) {
+            if (entry.getKey().equals(range)) {
+                return entry.getValue(); // Return corresponding range if found
+            }
+        }
+
+
+        // If map is empty, create a new range starting from 0
+        //map.put(range, newRange); // Add new mapping
+        return new Range(0L, range.getOffset());
+    }
+
+    public Range getKeyByValue(Long value) {
+        for (Map.Entry<Range, Range> entry : map.entrySet()) {
+            if (entry.getValue().isIncluded(value) {
+                return entry.getKey(); // Return the corresponding key for the given value
+            }
+        }
+        return null; // Return null if no matching key is found for the given value
+    }
      static void test(){
         var test = new GardenMap("prova");
         var lines = new ArrayList<String>();
@@ -65,5 +90,10 @@ public class GardenMap {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public String toString(){
+        return this.name+" -> "+map;
     }
 }
