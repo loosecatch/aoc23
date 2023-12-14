@@ -5,6 +5,8 @@ import it.pers.aoc23.model.Engine;
 import it.pers.aoc23.model.Trebuchet;
 import it.pers.aoc23.model.boatrace.BoatRace;
 import it.pers.aoc23.model.boatrace.RaceGame;
+import it.pers.aoc23.model.camelcards.CamelCardsGame;
+import it.pers.aoc23.model.camelcards.Hand;
 import it.pers.aoc23.model.cardgame.CardGame;
 import it.pers.aoc23.model.cardgame.ScratchCard;
 import it.pers.aoc23.model.garden.Garden;
@@ -22,8 +24,9 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var test = new RaceGame("6/example.txt");
-        test.partTwo();
+        var test = new CamelCardsGame("7/input.txt");
+        System.out.println(test);
+        test.partOne();
     }
 
 
