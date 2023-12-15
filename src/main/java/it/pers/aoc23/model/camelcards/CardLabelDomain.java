@@ -24,9 +24,9 @@ public enum CardLabelDomain implements Comparable<CardLabelDomain>{
     }
 
     public static CardLabelDomain getEnumByLabel(String label) {
-        for (CardLabelDomain dominioTipoPratica : CardLabelDomain.values()) {
-            if (dominioTipoPratica.getLabel().equals(label)) {
-                return dominioTipoPratica;
+        for (CardLabelDomain cardLabelDomain : CardLabelDomain.values()) {
+            if (cardLabelDomain.getLabel().equals(label)) {
+                return cardLabelDomain;
             }
         }
         throw new IllegalArgumentException();

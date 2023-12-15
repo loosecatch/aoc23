@@ -9,6 +9,8 @@ import it.pers.aoc23.model.camelcards.CamelCardsGame;
 import it.pers.aoc23.model.camelcards.Hand;
 import it.pers.aoc23.model.cardgame.CardGame;
 import it.pers.aoc23.model.cardgame.ScratchCard;
+import it.pers.aoc23.model.desertmap.DesertMap;
+import it.pers.aoc23.model.desertmap.Node;
 import it.pers.aoc23.model.garden.Garden;
 import it.pers.aoc23.model.garden.GardenMap;
 import org.springframework.boot.SpringApplication;
@@ -24,8 +26,7 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var test = new CamelCardsGame("7/input.txt");
-        test.partOne();
+        var test = new DesertMap("8/input.txt");
         test.partTwo();
     }
 
