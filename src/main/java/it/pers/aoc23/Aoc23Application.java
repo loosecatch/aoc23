@@ -25,8 +25,8 @@ public class Aoc23Application {
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
         var test = new CamelCardsGame("7/input.txt");
-        System.out.println(test);
         test.partOne();
+        test.partTwo();
     }
 
 

@@ -19,12 +19,16 @@ public class CamelCardsGame implements Day {
     @Override
     public void partOne() {
         var winnings= hands.stream().map(hand -> hand.getBid()*(hands.indexOf(hand)+1)).reduce(Integer::sum).get();
+        System.out.println(this);
         System.out.println("Winnings: "+winnings);
     }
 
     @Override
     public void partTwo() {
-
+        var newHands= hands.stream().map(hand -> new Hand(hand.getToString().replaceAll("J","N"),true)).sorted().toList();
+        var winnings= newHands.stream().map(hand -> hand.getBid()*(newHands.indexOf(hand)+1)).reduce(Integer::sum).get();
+        System.out.println(newHands);
+        System.out.println("Winnings: "+winnings);
     }
 
     @Override

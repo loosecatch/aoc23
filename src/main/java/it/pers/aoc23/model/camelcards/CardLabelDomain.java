@@ -13,7 +13,8 @@ public enum CardLabelDomain implements Comparable<CardLabelDomain>{
     FIVE("5",5),
     FOUR("4",4),
     THREE("3",3),
-    TWO("2",2);
+    TWO("2",2),
+    JOKER("N",1);
     private final String label;
     private final Integer strength;
 
