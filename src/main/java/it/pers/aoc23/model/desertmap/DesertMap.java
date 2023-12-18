@@ -1,10 +1,11 @@
 package it.pers.aoc23.model.desertmap;
 
 import it.pers.aoc23.model.days.Day;
+import it.pers.aoc23.utils.Utils;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.*;
 
 import static it.pers.aoc23.utils.Utils.getFileLines;
 
@@ -21,49 +22,67 @@ public class DesertMap implements Day {
 
     @Override
     public void partOne() {
+        int counter = stepsToDestination(nodes.get(0), "ZZZ", true);
+        System.out.println("Found after " + counter + " steps");
+    }
+
+    @Override
+    public void partTwo() {
+        var currentNodes = nodes.stream().filter(node -> getLastChar(node.getLabel()).equals("A")).toList();
+        var counter = calculateStepsForNodes(currentNodes, "Z").stream().reduce(1L, Utils::lcm);
+        System.out.println("Found after " + counter + " steps");
+    }
+
+    private int stepsToDestination(Node node, String destination, boolean isPartOne) {
         int counter = 0;
         boolean found = false;
-        var node = nodes.get(0);
         System.out.print("First ");
-        for (int i=0; i<directions.length() && !found; i=(i+1)%directions.length()){
-            System.out.print("Node: "+node+"\n");
-            if(node.getLabel().equals("ZZZ")){
-                found=true;
-            }else{
+        for (int i = 0; i < directions.length() && !found; i = (i + 1) % directions.length()) {
+            System.out.print("Node: " + node + "\n");
+            String label = isPartOne ? node.getLabel() : getLastChar(node.getLabel());
+            if (label.equals(destination)) {
+                found = true;
+            } else {
                 var dir = DirectionCharacters.getEnumByLabel(String.valueOf(directions.charAt(i)));
-                System.out.println("Direction #"+i+": "+dir.name());
+                System.out.println("Direction #" + i + ": " + dir.name());
                 var nextLabel = node.getDirection(dir);
                 if (nextLabel == null) {
                     System.out.println("No node!");
-                    return;
-                }else{
+                } else {
                     counter++;
                     node = nodes.stream().filter(n -> n.getLabel().equals(nextLabel)).toList().get(0);
                 }
             }
         }
-        System.out.println("Found after "+counter+" steps");
+        return counter;
     }
 
-    @Override
-    public void partTwo() {
+    public List<Long> calculateStepsForNodes(List<Node> nodeList, String destination) {
+        List<Long> resultList = new ArrayList<>();
 
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        int counter = 0;
-        boolean found = false;
-        var currentNodes = nodes.stream().filter(node -> getLastChar(node.getLabel()).equals("A")).toList();
-        for (int i=0; i<directions.length() && !found; i=(i+1)%directions.length()) {
-            if (currentNodes.stream().allMatch(node -> getLastChar(node.getLabel()).equals("Z"))) found=true;
-            else{
-                counter++;
-                var dir = DirectionCharacters.getEnumByLabel(String.valueOf(directions.charAt(i)));
-                var nextLabels = currentNodes.stream().map(node -> node.getDirection(dir));
-                currentNodes = nextLabels.map( label -> nodes.stream().filter(n -> n.getLabel().equals(label)).toList().get(0)).toList();
+        List<Future<Integer>> futures = new ArrayList<>();
+
+        for (Node node : nodeList) {
+            Future<Integer> future = executor.submit(() -> stepsToDestination(node,destination,false));
+            futures.add(future);
+        }
+
+        for (Future<Integer> future : futures) {
+            try {
+                int result = future.get();
+                resultList.add((long) result);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        System.out.println("Found after "+counter+" steps");
 
+        executor.shutdown();
+
+        return resultList;
     }
+
 
     private String getLastChar(String string){
         return String.valueOf(string.charAt(string.length()-1));
