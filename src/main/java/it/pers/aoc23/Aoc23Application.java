@@ -13,6 +13,8 @@ import it.pers.aoc23.model.desertmap.DesertMap;
 import it.pers.aoc23.model.desertmap.Node;
 import it.pers.aoc23.model.garden.Garden;
 import it.pers.aoc23.model.garden.GardenMap;
+import it.pers.aoc23.model.oasis.Oasis;
+import it.pers.aoc23.model.oasis.Sequence;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -26,7 +28,7 @@ public class Aoc23Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Aoc23Application.class, args);
-        var test = new DesertMap("8/input.txt");
+        var test = new Oasis("9/input.txt");
         test.partTwo();
     }
 
