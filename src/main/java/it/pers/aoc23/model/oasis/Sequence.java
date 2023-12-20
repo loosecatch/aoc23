@@ -48,17 +48,25 @@ public class Sequence {
         System.out.println(sequence+" "+integers); // Printing the sequence (optional)
 
         if (sequence.isAllZeros()) {
-            if (isPartOne)
-                return integers.stream().reduce(Integer::sum).orElse(0); // Return the sum
-            else return 0;
+            if (isPartOne) return integers.stream().reduce(Integer::sum).orElse(0); // Return the sum;
+            else{
+                System.out.println(integers);
+                int curr = 0;
+                for(int i=integers.size()-1;i>0;i--){
+                    System.out.print("\n#"+i+" integers.get(i)-curr = "+integers.get(i)+" - "+curr);
+                    curr=integers.get(i)-curr;
+                    System.out.print(" = "+curr+"\n");
+                }
+                System.out.println();
+                return integers.get(0)-curr;
+            }
+
         } else {
             var nextIndex = isPartOne ? sequence.length - 1 : 0;
             Sequence newSeq = new Sequence(sequence.getDifferences());
-            if (isPartOne) {
                 integers.add(sequence.values.get(nextIndex));
                 return sumSequence(newSeq, integers, isPartOne); // Recursive call with the updated sequence and integers list}
-            }else
-                return sequence.values.get(nextIndex) - sumSequence(newSeq,integers,isPartOne);
+
         }
     }
 
